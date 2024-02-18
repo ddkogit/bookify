@@ -15,6 +15,10 @@ function Login() {
     e.preventDefault();
     await firebase.loginUser(email,password);
   }
+  const handleGoogle = async (e)=>{
+    e.preventDefault();
+    await firebase.loginGoogle();
+  }
 
   return (
     <div className='container mt-3'>
@@ -37,8 +41,12 @@ function Login() {
      
       <Button variant="primary" type="submit">
         Submit
-      </Button>
+      </Button><br /><br />
+      
     </Form>
+    <Button variant="danger" onClick={handleGoogle}>
+        Login in with Google
+      </Button>
     </div>
   )
 }
