@@ -4,7 +4,7 @@ import { useFirebase } from '../context/Firebase';
 import { useState } from 'react';
 
 
-function Register() {
+function Login() {
 
   const firebase = useFirebase();
 
@@ -13,21 +13,19 @@ function Register() {
 
   const handleSubmit = async (e)=>{
     e.preventDefault();
-    await firebase.createUser(email,password);
+    await firebase.loginUser(email,password);
   }
 
   return (
     <div className='container mt-3'>
-      <h1>Register Page</h1>
+        <h1>Login Page</h1>
 <Form onSubmit={handleSubmit}> 
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control 
         onChange={(e)=>setEmail(e.target.value)}
         type="email" placeholder="Enter email" />
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
+       
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -45,4 +43,4 @@ function Register() {
   )
 }
 
-export default Register
+export default Login
