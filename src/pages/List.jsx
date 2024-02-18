@@ -14,6 +14,7 @@ function List() {
     e.preventDefault();
 
     await firebase.handleCreateNewListing(name, num, price, img);
+    
   };
   return (
     <div className="container mt-3">

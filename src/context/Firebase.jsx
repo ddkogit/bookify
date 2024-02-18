@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { createContext, useContext, useEffect, useState } from "react";
-import {getFirestore} from "firebase/firestore"
+import {getFirestore,collection,addDoc} from "firebase/firestore"
 
 import {
   getAuth,
@@ -10,6 +10,9 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
 } from "firebase/auth";
+
+import {getStorage,ref,uploadBytes} from "firebase/storage";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyByRGRmk8tZ0pAj1txRf4EaQo3WeKgrDis",
@@ -32,10 +35,15 @@ const firebaseAuth = getAuth(firebaseApp);
 
 const googleProvider = new GoogleAuthProvider();
 
+const firestore = getFirestore(firebaseApp);
+
+
 export const useFirebase = () => useContext(FirebaseContext);
 
 export const FirebaseProvider = (props) => {
   const [user, setUser] = useState(null);
+
+  const storage = getStorage(firebaseApp);
 
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
@@ -55,8 +63,17 @@ export const FirebaseProvider = (props) => {
     signInWithPopup(firebaseAuth, googleProvider);
   };
 
-  const handleCreateNewListing =(name,num,price,img)=>{
-    
+  const handleCreateNewListing = async (name,num,price,img)=>{
+      const imgRef = ref(storage,`uploads/images/${Date.now()}-${img}`);
+      const uploadResult = await uploadBytes(imgRef,img);
+    return await addDoc(collection(firestore,"books"),{
+      name,num,price,
+      imgURL:uploadResult.ref.fullPath,
+      userID:user.uid,
+      userEmail:user.email,
+      displayName:user.displayName,
+      photoURL:user.photoURL
+    })
   }
 
   const isLoggedIn = user ? true : false;
