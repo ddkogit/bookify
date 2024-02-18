@@ -1,10 +1,13 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useFirebase } from '../context/Firebase';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 function Register() {
+  const navigate = useNavigate();
+
 
   const firebase = useFirebase();
 
@@ -15,6 +18,11 @@ function Register() {
     e.preventDefault();
     await firebase.createUser(email,password);
   }
+
+  useEffect(()=>{
+    if(firebase.isLoggedIn) navigate("/");
+
+  },[firebase,navigate])
 
   return (
     <div className='container mt-3'>
