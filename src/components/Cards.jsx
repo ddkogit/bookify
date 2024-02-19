@@ -3,10 +3,14 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card'
 import CardGroup from 'react-bootstrap/Card'
 import { useFirebase } from '../context/Firebase';
+import {useNavigate} from "react-router-dom"
 
 function Cards(props) {
     const [url,setUrl] = useState(null);
     const firebase = useFirebase();
+
+  const navigate = useNavigate();
+
 useEffect(()=>{
 
   firebase.getImgURL(props.imgURL)
@@ -27,7 +31,8 @@ useEffect(()=>{
         <Card.Text>
         Its price is {props.price} and shold by {props.displayName}
         </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
+        <Button variant="primary"
+        onClick={e=>navigate(`/book/view/${props.id}`)}>View Details</Button>
       </Card.Body>
     </Card>
  

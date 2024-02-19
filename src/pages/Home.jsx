@@ -25,7 +25,7 @@ function Home() {
          books.map((book)=>(
           
 
-            <Cards key={book.id} {...book.data()}/>
+            <Cards key={book.id} id={book.id} {...book.data()}/>
            
             )
             )

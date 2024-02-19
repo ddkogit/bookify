@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import NavbarH from './components/Navbar';
 import List from './pages/List';
 import Home from './pages/Home';
+import Details from './pages/Details';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
       <Route path="/register" element={<Register />}/>
       <Route path="/login" element={<Login />}/>
       <Route path="/book/list" element={<List />}/>
+      <Route path="/book/view/:bookId" element={<Details />}/>
     </Routes>
     </div>
 

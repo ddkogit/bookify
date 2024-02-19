@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { createContext, useContext, useEffect, useState } from "react";
-import {getFirestore,collection,addDoc, getDocs} from "firebase/firestore"
+import { getFirestore, collection, addDoc, getDocs,getDoc,doc } from "firebase/firestore";
 
 import {
   getAuth,
@@ -11,8 +11,7 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 
-import {getStorage,ref,uploadBytes,getDownloadURL} from "firebase/storage";
-
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyByRGRmk8tZ0pAj1txRf4EaQo3WeKgrDis",
@@ -36,7 +35,6 @@ const firebaseAuth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
 
 const firestore = getFirestore(firebaseApp);
-
 
 export const useFirebase = () => useContext(FirebaseContext);
 
@@ -63,35 +61,51 @@ export const FirebaseProvider = (props) => {
     signInWithPopup(firebaseAuth, googleProvider);
   };
 
-  const handleCreateNewListing = async (name,num,price,img)=>{
-      const imgRef = ref(storage,`uploads/images/${Date.now()}-${img}`);
-      const uploadResult = await uploadBytes(imgRef,img);
-    return await addDoc(collection(firestore,"books"),{
-      name,num,price,
-      imgURL:uploadResult.ref.fullPath,
-      userID:user.uid,
-      userEmail:user.email,
-      displayName:user.displayName,
-      photoURL:user.photoURL
-    })
+  const handleCreateNewListing = async (name, num, price, img) => {
+    const imgRef = ref(storage, `uploads/images/${Date.now()}-${img}`);
+    const uploadResult = await uploadBytes(imgRef, img);
+    return await addDoc(collection(firestore, "books"), {
+      name,
+      num,
+      price,
+      imgURL: uploadResult.ref.fullPath,
+      userID: user.uid,
+      userEmail: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+    });
+  };
+
+  const listAllBooks = () => {
+    return getDocs(collection(firestore, "books"));
+  };
+
+  const getImgURL = (path) => {
+    return getDownloadURL(ref(storage, path));
+  };
+
+  const getBookById = async (id)=>{
+    const docRef =  doc(firestore,"books",id);
+    const result = await getDoc(docRef) ;
+    return result;
+    
   }
-
-  const listAllBooks =()=>{
-    return getDocs(collection(firestore,'books'));
-
-  }
-
-  const getImgURL =(path)=>{
-
-    return getDownloadURL(ref(storage,path));
-
-  }
-
 
   const isLoggedIn = user ? true : false;
 
   return (
-    <FirebaseContext.Provider value={{ createUser, loginUser, loginGoogle,isLoggedIn,handleCreateNewListing,listAllBooks,getImgURL}}>
+    <FirebaseContext.Provider
+      value={{
+        createUser,
+        loginUser,
+        loginGoogle,
+        isLoggedIn,
+        handleCreateNewListing,
+        listAllBooks,
+        getImgURL,
+        getBookById
+      }}
+    >
       {props.children}
     </FirebaseContext.Provider>
   );
