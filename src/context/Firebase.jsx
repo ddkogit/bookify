@@ -91,6 +91,19 @@ export const FirebaseProvider = (props) => {
     
   }
 
+  const placeOrder=async (bookId,qty)=>{
+    const collRef = collection(firestore,"books",bookId,"orders");
+    const result = await addDoc(collRef,{
+      userID: user.uid,
+      userEmail: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      qty:Number(qty),
+    });
+    return result;
+
+  }
+
   const isLoggedIn = user ? true : false;
 
   return (
@@ -103,7 +116,8 @@ export const FirebaseProvider = (props) => {
         handleCreateNewListing,
         listAllBooks,
         getImgURL,
-        getBookById
+        getBookById,
+        placeOrder,
       }}
     >
       {props.children}
