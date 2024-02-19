@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card'
+import CardGroup from 'react-bootstrap/Card'
 import { useFirebase } from '../context/Firebase';
 
 function Cards(props) {
@@ -8,14 +9,19 @@ function Cards(props) {
     const firebase = useFirebase();
 useEffect(()=>{
 
+  firebase.getImgURL(props.imgURL)
+  .then((url)=>setUrl(url));
+
+  
     
 
 })
 
   return (
-    <div className='container'>
- <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src="holder.js/100px180" />
+    
+    
+ <Card style={{ width: '18rem', margin:"15px" }}>
+      <Card.Img variant="top" src={url} />
       <Card.Body>
         <Card.Title>   {props.name}</Card.Title>
         <Card.Text>
@@ -24,7 +30,8 @@ useEffect(()=>{
         <Button variant="primary">Go somewhere</Button>
       </Card.Body>
     </Card>
-    </div>
+ 
+ 
   )
 }
 

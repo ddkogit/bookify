@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useFirebase } from '../context/Firebase'
 import Cards from '../components/Cards';
+import CardGroup from 'react-bootstrap/CardGroup'
+
 
 
 function Home() {
@@ -15,16 +17,24 @@ function Home() {
     },[])
 
   return (
-    <div className='container'>
+
+           <div className='container'>
+           <CardGroup>
        {
-        books.map((book)=>(
+         
+         books.map((book)=>(
+          
 
             <Cards key={book.id} {...book.data()}/>
+           
             )
-        )
-       }
+            )
+          }
+             </ CardGroup>
     </div>
+          
   )
+          
 }
 
 export default Home
