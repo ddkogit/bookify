@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { createContext, useContext, useEffect, useState } from "react";
-import {getFirestore,collection,addDoc} from "firebase/firestore"
+import {getFirestore,collection,addDoc, getDocs} from "firebase/firestore"
 
 import {
   getAuth,
@@ -11,7 +11,7 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 
-import {getStorage,ref,uploadBytes} from "firebase/storage";
+import {getStorage,ref,uploadBytes,getDownloadURL} from "firebase/storage";
 
 
 const firebaseConfig = {
@@ -76,10 +76,22 @@ export const FirebaseProvider = (props) => {
     })
   }
 
+  const listAllBooks =()=>{
+    return getDocs(collection(firestore,'books'));
+
+  }
+
+  const getImgURL =(path)=>{
+
+    return getDownloadURL(ref(storage,path));
+
+  }
+
+
   const isLoggedIn = user ? true : false;
 
   return (
-    <FirebaseContext.Provider value={{ createUser, loginUser, loginGoogle,isLoggedIn,handleCreateNewListing }}>
+    <FirebaseContext.Provider value={{ createUser, loginUser, loginGoogle,isLoggedIn,handleCreateNewListing,listAllBooks,getImgURL}}>
       {props.children}
     </FirebaseContext.Provider>
   );

@@ -8,7 +8,7 @@ function NavbarH() {
     <div>
         <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="/home">Home</Navbar.Brand>
+        <Navbar.Brand href="/">Home</Navbar.Brand>
         <Navbar.Brand href="/book/list">Add Listing</Navbar.Brand>
        
       </Container>
